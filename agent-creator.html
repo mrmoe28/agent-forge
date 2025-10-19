@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Creator | AgentForge</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .step-indicator {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .step-indicator.active {
+            background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+        }
+        .step-indicator.inactive {
+            background-color: #374151;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .api-badge {
+            transition: all 0.2s ease;
+        }
+        .api-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-card fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center">
+                        <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md">
+                            <i data-feather="save" class="w-4 h-4 mr-2"></i> Save Draft
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="glass-card p-8 rounded-xl mb-8">
+            <h1 class="text-3xl font-bold mb-2">Create New Agent</h1>
+            <p class="text-gray-300 mb-6">Configure your autonomous digital assistant</p>
+            
+            <!-- Stepper -->
+            <div class="flex justify-between items-center mb-8 relative">
+                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700 -z-10"></div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator active mb-2" id="step-1-indicator">1</div>
+                    <span class="text-sm font-medium">Define Agent</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive mb-2" id="step-2-indicator">2</div>
+                    <span class="text-sm text-gray-400">Connect APIs</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive mb-2" id="step-3-indicator">3</div>
+                    <span class="text-sm text-gray-400">Set Permissions</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive mb-2" id="step-4-indicator">4</div>
+                    <span class="text-sm text-gray-400">Review & Deploy</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Define Agent -->
+            <div class="tab-content active" id="step-1">
+                <div class="mb-8">
+                    <label class="block text-sm font-medium mb-2" for="agent-name">Agent Name</label>
+                    <input type="text" id="agent-name" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="e.g. Code Review Bot">
+                </div>
+                
+                <div class="mb-8">
+                    <label class="block text-sm font-medium mb-2">Agent Type</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="glass-card p-4 rounded-lg text-left hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="text-purple-400 mb-2">
+                                <i data-feather="code" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Code Assistant</h3>
+                            <p class="text-sm text-gray-300">Review, analyze and improve your code</p>
+                        </button>
+                        <button class="glass-card p-4 rounded-lg text-left hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="text-blue-400 mb-2">
+                                <i data-feather="file-text" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Document Manager</h3>
+                            <p class="text-sm text-gray-300">Organize and process documents</p>
+                        </button>
+                        <button class="glass-card p-4 rounded-lg text-left hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="text-pink-400 mb-2">
+                                <i data-feather="message-circle" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-bold mb-1">Q&A Bot</h3>
+                            <p class="text-sm text-gray-300">Answer questions from knowledge bases</p>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <label class="block text-sm font-medium mb-2">Describe Agent Purpose</label>
+                    <textarea class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 h-32" placeholder="Describe what you want your agent to do in natural language..."></textarea>
+                    <p class="text-xs text-gray-400 mt-1">Example: "An agent that reviews all new pull requests in our GitHub repo, checks for code quality issues, and posts comments with suggestions."</p>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-all next-step" data-next="step-2">
+                        Next: Connect APIs <i data-feather="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Connect APIs -->
+            <div class="tab-content" id="step-2">
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold mb-4">Connect Required APIs</h2>
+                    <p class="text-gray-300 mb-6">Select which APIs your agent needs to function. You'll configure the API keys in the next step.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/openai.com" alt="OpenAI" class="w-8 h-8 rounded-md mr-3">
+                                <div>
+                                    <h3 class="font-bold">OpenAI</h3>
+                                    <p class="text-xs text-gray-400">AI language processing</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/github.com" alt="GitHub" class="w-8 h-8 rounded-md mr-3">
+                                <div>
+                                    <h3 class="font-bold">GitHub</h3>
+                                    <p class="text-xs text-gray-400">Code repositories</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/dropbox.com" alt="Dropbox" class="w-8 h-8 rounded-md mr-3">
+                                <div>
+                                    <h3 class="font-bold">Dropbox</h3>
+                                    <p class="text-xs text-gray-400">File storage</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/slack.com" alt="Slack" class="w-8 h-8 rounded-md mr-3">
+                                <div>
+                                    <h3 class="font-bold">Slack</h3>
+                                    <p class="text-xs text-gray-400">Team communication</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/aws.amazon.com" alt="AWS" class="w-8 h-8 rounded-md mr-3">
+                                <div>
+                                    <h3 class="font-bold">AWS S3</h3>
+                                    <p class="text-xs text-gray-400">Cloud storage</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="api-badge glass-card p-4 rounded-lg cursor-pointer hover:border-purple-500 border border-gray-700 transition-all">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-md bg-gray-700 flex items-center justify-center mr-3">
+                                    <i data-feather="database" class="w-4 h-4 text-gray-300"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">PostgreSQL</h3>
+                                    <p class="text-xs text-gray-400">Database</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition-all prev-step" data-prev="step-1">
+                        <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-all next-step" data-next="step-3">
+                        Next: Set Permissions <i data-feather="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Set Permissions -->
+            <div class="tab-content" id="step-3">
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold mb-4">API Key Configuration</h2>
+                    <p class="text-gray-300 mb-6">Enter the API keys for the services you selected. These will be securely encrypted.</p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">OpenAI API Key</label>
+                            <input type="password" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="sk-...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">GitHub Access Token</label>
+                            <input type="password" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="ghp_...">
+                            <p class="text-xs text-gray-400 mt-1">Requires repo and read:org permissions</p>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-xl font-bold mb-4 mt-8">Access Permissions</h2>
+                    <p class="text-gray-300 mb-6">Define what resources your agent can access and modify.</p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="read-files" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600" checked>
+                            <label for="read-files" class="ml-2 text-sm">Read files and documents</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="modify-files" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                            <label for="modify-files" class="ml-2 text-sm">Modify or delete files</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="create-files" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600" checked>
+                            <label for="create-files" class="ml-2 text-sm">Create new files</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="execute-code" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                            <label for="execute-code" class="ml-2 text-sm">Execute code snippets</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="send-messages" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600" checked>
+                            <label for="send-messages" class="ml-2 text-sm">Send messages/notifications</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition-all prev-step" data-prev="step-2">
+                        <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back
+                    </button>
+                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-all next-step" data-next="step-4">
+                        Next: Review & Deploy <i data-feather="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review & Deploy -->
+            <div class="tab-content" id="step-4">
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold mb-4">Review Your Agent</h2>
+                    <p class="text-gray-300 mb-6">Verify all details before deploying your autonomous agent.</p>
+                    
+                    <div class="glass-card p-6 rounded-lg mb-6">
+                        <h3 class="font-bold text-lg mb-4">Agent Configuration Summary</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Basic Information</h4>
+                                <p class="mb-1"><span class="text-gray-400">Name:</span> Code Review Bot</p>
+                                <p class="mb-1"><span class="text-gray-400">Type:</span> Code Assistant</p>
+                                <p><span class="text-gray-400">Purpose:</span> Review pull requests and suggest improvements</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Connected APIs</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">OpenAI</span>
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">GitHub</span>
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">Slack</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Permissions</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">Read files</span>
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">Send messages</span>
+                                    <span class="px-2 py-1 bg-gray-800 rounded-full text-xs">Create files</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Triggers</h4>
+                                <p class="mb-1">New pull request created</p>
+                                <p>Daily at 10:00 AM UTC</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-4">Deployment Options</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Environment</h4>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="env-production" name="environment" class="form-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600">
+                                        <label for="env-production" class="ml-2">Production</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="env-staging" name="environment" class="form-radio h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600" checked>
+                                        <label for="env-staging" class="ml-2">Staging</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-400 mb-2">Monitoring</h4>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="enable-monitoring" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600" checked>
+                                        <label for="enable-monitoring" class="ml-2">Enable activity logging</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="terms" class="form-checkbox h-4 w-4 text-purple-600 rounded focus:ring-purple-500 border-gray-600">
+                            <label for="terms" class="ml-2 text-sm">I confirm that I have reviewed this agent's configuration and understand the permissions it will have.</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition-all prev-step" data-prev="step-3">
+                        <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-all flex items-center">
+                        <i data-feather="rocket" class="w-4 h-4 mr-2"></i> Deploy Agent
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize feather icons
+        feather.replace();
+
+        // Stepper navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelectorAll('.tab-content');
+            const indicators = document.querySelectorAll('.step-indicator');
+            
+            // Next step buttons
+            document.querySelectorAll('.next-step').forEach(button => {
+                button.addEventListener('click', () => {
+                    const nextStep = button.getAttribute('data-next');
+                    showStep(nextStep);
+                    updateIndicator(nextStep);
+                });
+            });
+            
+            // Previous step buttons
+            document.querySelectorAll('.prev-step').forEach(button => {
+                button.addEventListener('click', () => {
+                    const prevStep = button.getAttribute('data-prev');
+                    showStep(prevStep);
+                    updateIndicator(prevStep);
+                });
+            });
+            
+            function showStep(stepId) {
+                steps.forEach(step => {
+                    step.classList.remove('active');
+                    if (step.id === stepId) {
+                        step.classList.add('active');
+                    }
+                });
+            }
+            
+            function updateIndicator(stepId) {
+                const stepNumber = parseInt(stepId.split('-')[1]);
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.remove('active', 'inactive');
+                    if (index < stepNumber - 1) {
+                        indicator.classList.add('active');
+                    } else if (index === stepNumber - 1) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.add('inactive');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

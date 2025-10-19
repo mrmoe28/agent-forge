@@ -1,19 +1,280 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>My static Space</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="card">
-			<h1>Welcome to your static Space!</h1>
-			<p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
-			<p>
-				Also don't forget to check the
-				<a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
-			</p>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentForge - Autonomous Digital Craftsmen</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .agent-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        #vanta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen overflow-x-hidden">
+    <div id="vanta-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="glass-card fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-purple-600">Dashboard</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Agents</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">API Keys</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Integrations</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Documentation</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-white focus:outline-none">
+                            <i data-feather="bell"></i>
+                        </button>
+                        <div class="ml-3 relative">
+                            <div>
+                                <button class="max-w-xs flex items-center text-sm rounded-full focus:outline-none" id="user-menu">
+                                    <img class="h-8 w-8 rounded-full" src="http://static.photos/technology/200x200/42" alt="User profile">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">
+                <span class="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Forge Your Digital Workforce</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                Create, deploy and manage autonomous agents that handle file operations, code reviews, and intelligent Q&A - all through a simple interface.
+            </p>
+            <div class="mt-10">
+                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                    Create Your First Agent <i data-feather="arrow-right" class="inline ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <div class="glass-card agent-card p-8 rounded-xl transition-all duration-300">
+                <div class="text-purple-400 mb-4">
+                    <i data-feather="cpu" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Autonomous File Management</h3>
+                <p class="text-gray-300">
+                    Agents that automatically organize, move, and process files based on your rules and AI understanding of content.
+                </p>
+            </div>
+            <div class="glass-card agent-card p-8 rounded-xl transition-all duration-300">
+                <div class="text-pink-400 mb-4">
+                    <i data-feather="code" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Smart Code Review</h3>
+                <p class="text-gray-300">
+                    AI-powered agents that analyze, suggest improvements, and even fix code in your repositories automatically.
+                </p>
+            </div>
+            <div class="glass-card agent-card p-8 rounded-xl transition-all duration-300">
+                <div class="text-blue-400 mb-4">
+                    <i data-feather="message-circle" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Intelligent Q&A</h3>
+                <p class="text-gray-300">
+                    Knowledgeable agents that answer technical questions by searching documentation, codebases, and internal wikis.
+                </p>
+            </div>
+        </div>
+
+        <!-- API Integration Section -->
+        <div class="glass-card p-8 rounded-xl mb-16">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <h2 class="text-3xl font-bold mb-4">Powerful API Integration</h2>
+                    <p class="text-gray-300 mb-6">
+                        Seamlessly connect with OpenAI, GitHub, Dropbox, Slack, and more. Our MCP (Microservice Control Protocol) ensures smooth communication between all your tools.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">OpenAI</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">GitHub</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">Dropbox</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">Slack</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">AWS</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full text-sm">Google Drive</span>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <div class="text-xs text-gray-400 ml-auto">api-integration.js</div>
+                        </div>
+                        <pre class="text-xs text-green-400 overflow-x-auto"><code>const AgentForge = require('agentforge-sdk');
+
+const codeReviewAgent = new AgentForge.Agent({
+    name: 'code-reviewer',
+    capabilities: ['github', 'openai'],
+    triggers: {
+        pullRequest: true,
+        schedule: 'daily'
+    },
+    actions: [
+        {
+            type: 'reviewCode',
+            params: {
+                strictness: 'high',
+                language: 'javascript'
+            }
+        },
+        {
+            type: 'generateReport',
+            format: 'markdown'
+        }
+    ]
+});
+
+codeReviewAgent.deploy();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Creation Flow -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold mb-2">Create an Agent in 3 Steps</h2>
+            <p class="text-gray-300 mb-12 max-w-2xl mx-auto">Our intuitive interface makes it simple to configure powerful autonomous agents.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-purple-400 text-4xl font-bold mb-4">1</div>
+                    <h3 class="text-xl font-bold mb-3">Define Purpose</h3>
+                    <p class="text-gray-300">
+                        Select from templates or describe what you need your agent to do in natural language.
+                    </p>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-pink-400 text-4xl font-bold mb-4">2</div>
+                    <h3 class="text-xl font-bold mb-3">Configure Capabilities</h3>
+                    <p class="text-gray-300">
+                        Connect APIs, set permissions, and define triggers for when the agent should act.
+                    </p>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="text-blue-400 text-4xl font-bold mb-4">3</div>
+                    <h3 class="text-xl font-bold mb-3">Deploy & Monitor</h3>
+                    <p class="text-gray-300">
+                        Launch your agent and track its activities through beautiful dashboards and logs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-card py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    <p class="text-gray-400 text-sm mt-2">© 2023 Autonomous Digital Craftsmen. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="mail"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js globe background
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x7e22ce,
+            backgroundColor: 0x111827,
+            size: 0.8
+        });
+
+        // Initialize feather icons
+        feather.replace();
+
+        // Animate elements on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeInUp');
+                    }
+                });
+            }, {threshold: 0.1});
+
+            document.querySelectorAll('.agent-card, .glass-card').forEach(card => {
+                observer.observe(card);
+                card.classList.add('opacity-0', 'transition-all', 'duration-500', 'ease-out');
+            });
+
+            setTimeout(() => {
+                document.querySelectorAll('.agent-card, .glass-card').forEach(card => {
+                    card.classList.add('opacity-100');
+                });
+            }, 300);
+        });
+    </script>
+</body>
 </html>
