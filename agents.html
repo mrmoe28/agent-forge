@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agents | AgentForge</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .agent-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .status-active {
+            background-color: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+        }
+        .status-inactive {
+            background-color: rgba(248, 113, 113, 0.1);
+            color: #f87171;
+        }
+        .status-pending {
+            background-color: rgba(250, 204, 21, 0.1);
+            color: #facc15;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-card fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Dashboard</a>
+                            <a href="agents.html" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-purple-600">Agents</a>
+                            <a href="agent-creator.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Create Agent</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center">
+                        <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md">
+                            <i data-feather="plus" class="w-4 h-4 mr-2"></i> New Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Your Agents</h1>
+            <div class="flex space-x-2">
+                <div class="relative">
+                    <select class="bg-gray-800 border border-gray-700 rounded-md py-2 pl-3 pr-8 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 appearance-none">
+                        <option>All Agents</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                        <option>Pending</option>
+                    </select>
+                    <i data-feather="chevron-down" class="absolute right-3 top-3 w-4 h-4 text-gray-400"></i>
+                </div>
+                <button class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-medium py-2 px-3 rounded-md flex items-center">
+                    <i data-feather="filter" class="w-4 h-4 mr-2"></i> Filter
+                </button>
+            </div>
+        </div>
+
+        <!-- Agents Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Agent 1 -->
+            <div class="glass-card agent-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">Code Reviewer</h3>
+                        <span class="text-xs px-2 py-1 rounded-full status-active">Active</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-400">
+                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-400">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-300 mb-4">Automatically reviews pull requests and suggests improvements</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">GitHub</span>
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">OpenAI</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-400">Last run: 2 hours ago</span>
+                    <button class="text-purple-400 hover:text-purple-300 flex items-center">
+                        <i data-feather="activity" class="w-4 h-4 mr-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agent 2 -->
+            <div class="glass-card agent-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">Doc Organizer</h3>
+                        <span class="text-xs px-2 py-1 rounded-full status-active">Active</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-400">
+                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-400">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-300 mb-4">Organizes documents based on content and metadata</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">Dropbox</span>
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">OpenAI</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-400">Last run: 15 min ago</span>
+                    <button class="text-purple-400 hover:text-purple-300 flex items-center">
+                        <i data-feather="activity" class="w-4 h-4 mr-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agent 3 -->
+            <div class="glass-card agent-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">Q&A Bot</h3>
+                        <span class="text-xs px-2 py-1 rounded-full status-inactive">Inactive</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-400">
+                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-400">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-300 mb-4">Answers technical questions from documentation</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">OpenAI</span>
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">Vector DB</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-400">Last run: 3 days ago</span>
+                    <button class="text-purple-400 hover:text-purple-300 flex items-center">
+                        <i data-feather="activity" class="w-4 h-4 mr-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agent 4 -->
+            <div class="glass-card agent-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">SEO Analyzer</h3>
+                        <span class="text-xs px-2 py-1 rounded-full status-pending">Pending</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-400">
+                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-400">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-300 mb-4">Analyzes website content for SEO improvements</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">Web Search</span>
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">OpenAI</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-400">Waiting deployment</span>
+                    <button class="text-purple-400 hover:text-purple-300 flex items-center">
+                        <i data-feather="activity" class="w-4 h-4 mr-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agent 5 -->
+            <div class="glass-card agent-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-bold text-lg">Slack Moderator</h3>
+                        <span class="text-xs px-2 py-1 rounded-full status-active">Active</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-400">
+                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-400">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-300 mb-4">Monitors Slack channels for policy violations</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">Slack</span>
+                    <span class="text-xs px-2 py-1 bg-gray-800 rounded-full">OpenAI</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-400">Last run: 1 hour ago</span>
+                    <button class="text-purple-400 hover:text-purple-300 flex items-center">
+                        <i data-feather="activity" class="w-4 h-4 mr-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- New Agent Card -->
+            <div class="glass-card p-6 rounded-xl transition-all duration-300 border-2 border-dashed border-gray-700 hover:border-purple-500 flex flex-col items-center justify-center min-h-[200px]">
+                <div class="text-center">
+                    <div class="text-purple-400 mx-auto mb-3">
+                        <i data-feather="plus-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Create New Agent</h3>
+                    <p class="text-sm text-gray-400 mb-4">Build a custom autonomous assistant</p>
+                    <a href="agent-creator.html" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md text-sm transition-all">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
