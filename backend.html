@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Services | AgentForge</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-card fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Dashboard</a>
+                            <a href="agent-creator.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Agent Creator</a>
+                            <a href="backend.html" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-purple-600">Backend</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Backend Services</h1>
+        
+        <!-- Service Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Agent Orchestration -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-purple-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="cpu" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Agent Orchestration</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Central management system for deploying, monitoring, and coordinating agent activities.</p>
+                <div class="flex items-center text-sm text-purple-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+
+            <!-- Memory Database -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-blue-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="database" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Memory Database</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Vector-based storage for agent context, knowledge, and long-term memory.</p>
+                <div class="flex items-center text-sm text-blue-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+
+            <!-- API Gateway -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-pink-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="share-2" class="w-6 h-6 text-pink-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">API Gateway</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Secure interface for all external API connections with rate limiting and caching.</p>
+                <div class="flex items-center text-sm text-pink-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+
+            <!-- Task Queue -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-yellow-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="list" class="w-6 h-6 text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Task Queue</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Distributed job queue system for handling agent tasks with priority levels.</p>
+                <div class="flex items-center text-sm text-yellow-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+
+            <!-- Authentication -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="lock" class="w-6 h-6 text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Authentication</h3>
+                </div>
+                <p class="text-gray-300 mb-4">JWT-based auth system with role-based access control for all services.</p>
+                <div class="flex items-center text-sm text-green-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+
+            <!-- Monitoring -->
+            <div class="glass-card service-card p-6 rounded-xl transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="bg-red-500/20 p-3 rounded-lg mr-4">
+                        <i data-feather="activity" class="w-6 h-6 text-red-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Monitoring</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Real-time metrics collection and alerting system for all backend services.</p>
+                <div class="flex items-center text-sm text-red-400">
+                    <span>Running</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 ml-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Logs -->
+        <div class="glass-card p-6 rounded-xl mb-8">
+            <h2 class="text-2xl font-bold mb-4">Service Logs</h2>
+            <div class="bg-gray-800 rounded-lg p-4 overflow-x-auto">
+                <pre class="text-xs text-gray-300">
+<span class="text-green-400">[INFO]</span> 2023-11-15T14:32:45 AgentOrchestrator: Deployed new agent "code-review-bot"
+<span class="text-blue-400">[DEBUG]</span> 2023-11-15T14:32:47 MemoryDB: Stored 3 new embeddings (size: 1.2MB)
+<span class="text-green-400">[INFO]</span> 2023-11-15T14:33:01 API Gateway: Processed 42 requests (avg latency: 128ms)
+<span class="text-yellow-400">[WARN]</span> 2023-11-15T14:33:12 TaskQueue: High priority queue at 78% capacity
+<span class="text-green-400">[INFO]</span> 2023-11-15T14:33:45 Monitoring: All systems normal
+<span class="text-green-400">[INFO]</span> 2023-11-15T14:34:02 Authentication: Issued 5 new JWT tokens
+<span class="text-blue-400">[DEBUG]</span> 2023-11-15T14:34:15 AgentOrchestrator: Scheduled next run for agent "doc-analyzer"
+                </pre>
+            </div>
+        </div>
+
+        <!-- API Documentation -->
+        <div class="glass-card p-6 rounded-xl">
+            <h2 class="text-2xl font-bold mb-4">API Documentation</h2>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-3 text-purple-400">Agent Management API</h3>
+                <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-purple-600 text-white text-xs px-2 py-1 rounded mr-2">POST</span>
+                        <span class="font-mono text-sm">/api/v1/agents</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-2">Create a new agent instance</p>
+                    <pre class="text-xs text-gray-400 bg-gray-900 p-2 rounded overflow-x-auto">{
+    "name": "string",
+    "type": "string",
+    "capabilities": ["string"],
+    "config": "object"
+}</pre>
+                </div>
+                
+                <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-green-600 text-white text-xs px-2 py-1 rounded mr-2">GET</span>
+                        <span class="font-mono text-sm">/api/v1/agents/{id}</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-2">Get agent status and metrics</p>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-3 text-blue-400">Memory API</h3>
+                <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2">POST</span>
+                        <span class="font-mono text-sm">/api/v1/memory/query</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-2">Query agent memory</p>
+                    <pre class="text-xs text-gray-400 bg-gray-900 p-2 rounded overflow-x-auto">{
+    "agent_id": "string",
+    "query": "string",
+    "limit": 5
+}</pre>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-3 text-green-400">Task API</h3>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-yellow-600 text-white text-xs px-2 py-1 rounded mr-2">PUT</span>
+                        <span class="font-mono text-sm">/api/v1/tasks/{id}/status</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-2">Update task status</p>
+                    <pre class="text-xs text-gray-400 bg-gray-900 p-2 rounded overflow-x-auto">{
+    "status": "pending|running|completed|failed",
+    "output": "object"
+}</pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
