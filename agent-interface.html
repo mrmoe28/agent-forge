@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Interface | AgentForge</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .message-user {
+            background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+        }
+        .message-agent {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .chat-container {
+            height: calc(100vh - 320px);
+            min-height: 400px;
+        }
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9333ea;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .file-upload-zone {
+            transition: all 0.3s ease;
+        }
+        .file-upload-zone.dragover {
+            background: rgba(147, 51, 234, 0.2);
+            border-color: #9333ea;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-card fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">AgentForge</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Dashboard</a>
+                            <a href="agents.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Agents</a>
+                            <a href="agent-creator.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Create Agent</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center">
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md flex items-center">
+                            <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back to Agents
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Sidebar - Agent Info & History -->
+            <div class="lg:col-span-1">
+                <!-- Agent Info Card -->
+                <div class="glass-card p-6 rounded-xl mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
+                            <i data-feather="cpu" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h2 class="font-bold text-lg" id="agent-name">Loading...</h2>
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-400">Active</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-300 mb-4" id="agent-purpose">Agent purpose will appear here</p>
+
+                    <div class="space-y-3">
+                        <div>
+                            <span class="text-xs text-gray-400">Type</span>
+                            <p class="text-sm font-medium" id="agent-type">-</p>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400">Capabilities</span>
+                            <div class="flex flex-wrap gap-1 mt-1" id="agent-capabilities">
+                                <!-- Capabilities badges -->
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400">Total Interactions</span>
+                            <p class="text-sm font-medium">247</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interaction History -->
+                <div class="glass-card p-6 rounded-xl">
+                    <h3 class="font-bold mb-4 flex items-center">
+                        <i data-feather="clock" class="w-4 h-4 mr-2"></i> Recent Sessions
+                    </h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-left p-3 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-all">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-sm font-medium">Code review session</span>
+                                <span class="text-xs text-gray-400">2h ago</span>
+                            </div>
+                            <p class="text-xs text-gray-400">Reviewed 3 pull requests</p>
+                        </button>
+                        <button class="w-full text-left p-3 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-all">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-sm font-medium">Documentation help</span>
+                                <span class="text-xs text-gray-400">5h ago</span>
+                            </div>
+                            <p class="text-xs text-gray-400">12 messages exchanged</p>
+                        </button>
+                        <button class="w-full text-left p-3 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-all">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-sm font-medium">Bug analysis</span>
+                                <span class="text-xs text-gray-400">1d ago</span>
+                            </div>
+                            <p class="text-xs text-gray-400">Analyzed 5 error logs</p>
+                        </button>
+                    </div>
+                    <button class="w-full mt-4 text-purple-400 hover:text-purple-300 text-sm font-medium">
+                        View All History <i data-feather="arrow-right" class="w-3 h-3 inline ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Interface Area -->
+            <div class="lg:col-span-3">
+                <!-- Chat Interface (for Q&A bots) -->
+                <div id="chat-interface" class="glass-card p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-700">
+                        <h2 class="text-xl font-bold">Chat with Agent</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-800">
+                                <i data-feather="download" class="w-4 h-4"></i>
+                            </button>
+                            <button class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-800">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div class="chat-container overflow-y-auto mb-4 space-y-4 p-4" id="messages-container">
+                        <!-- Welcome message -->
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center flex-shrink-0">
+                                <i data-feather="cpu" class="w-4 h-4 text-white"></i>
+                            </div>
+                            <div class="ml-3 message-agent p-4 rounded-lg max-w-2xl">
+                                <p class="text-sm">Hello! I'm ready to help you. What can I do for you today?</p>
+                                <span class="text-xs text-gray-400 mt-2 block">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="border-t border-gray-700 pt-4">
+                        <div class="flex gap-2">
+                            <div class="flex-1 relative">
+                                <textarea
+                                    id="message-input"
+                                    rows="1"
+                                    class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 pr-24 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 resize-none"
+                                    placeholder="Type your message..."
+                                ></textarea>
+                                <div class="absolute right-2 bottom-2 flex gap-1">
+                                    <button class="text-gray-400 hover:text-white p-1.5 rounded hover:bg-gray-700" title="Attach file">
+                                        <i data-feather="paperclip" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white p-1.5 rounded hover:bg-gray-700" title="Voice input">
+                                        <i data-feather="mic" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button id="send-button" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-3 rounded-lg transition-all flex items-center">
+                                <i data-feather="send" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-xs text-gray-400">
+                                <i data-feather="zap" class="w-3 h-3 inline"></i> Powered by OpenAI GPT-4
+                            </span>
+                            <span class="text-xs text-gray-400">Press Enter to send</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Assistant Interface -->
+                <div id="code-interface" class="glass-card p-6 rounded-xl hidden">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-700">
+                        <h2 class="text-xl font-bold">Code Assistant</h2>
+                        <div class="flex items-center gap-2">
+                            <select class="bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-600">
+                                <option>Review Pull Request</option>
+                                <option>Analyze Code Quality</option>
+                                <option>Find Security Issues</option>
+                                <option>Suggest Improvements</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Repository URL</label>
+                            <input type="text" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="https://github.com/user/repo">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Pull Request #</label>
+                            <input type="text" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="123">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Additional Instructions</label>
+                        <textarea rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Focus on security vulnerabilities and performance issues..."></textarea>
+                    </div>
+
+                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all">
+                        <i data-feather="play-circle" class="w-4 h-4 inline mr-2"></i> Start Review
+                    </button>
+
+                    <!-- Results Area -->
+                    <div class="mt-6 p-4 bg-gray-800/50 rounded-lg">
+                        <h3 class="font-bold mb-3">Review Results</h3>
+                        <p class="text-sm text-gray-400">Results will appear here after the agent completes the review...</p>
+                    </div>
+                </div>
+
+                <!-- Document Manager Interface -->
+                <div id="document-interface" class="glass-card p-6 rounded-xl hidden">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-700">
+                        <h2 class="text-xl font-bold">Document Manager</h2>
+                    </div>
+
+                    <!-- File Upload Zone -->
+                    <div class="file-upload-zone border-2 border-dashed border-gray-700 rounded-lg p-12 text-center mb-6">
+                        <i data-feather="upload-cloud" class="w-12 h-12 mx-auto text-gray-400 mb-4"></i>
+                        <h3 class="font-bold mb-2">Drag & drop files here</h3>
+                        <p class="text-sm text-gray-400 mb-4">or click to browse</p>
+                        <input type="file" id="file-input" multiple class="hidden">
+                        <button onclick="document.getElementById('file-input').click()" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-lg">
+                            Select Files
+                        </button>
+                        <p class="text-xs text-gray-400 mt-4">Supports PDF, DOC, DOCX, TXT, CSV, and more</p>
+                    </div>
+
+                    <!-- Task Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <button class="glass-card p-4 rounded-lg hover:bg-gray-800/50 transition-all text-left">
+                            <i data-feather="folder" class="w-6 h-6 text-purple-400 mb-2"></i>
+                            <h4 class="font-medium mb-1">Organize Files</h4>
+                            <p class="text-xs text-gray-400">Automatically categorize and sort</p>
+                        </button>
+                        <button class="glass-card p-4 rounded-lg hover:bg-gray-800/50 transition-all text-left">
+                            <i data-feather="file-text" class="w-6 h-6 text-blue-400 mb-2"></i>
+                            <h4 class="font-medium mb-1">Extract Data</h4>
+                            <p class="text-xs text-gray-400">Pull key information</p>
+                        </button>
+                        <button class="glass-card p-4 rounded-lg hover:bg-gray-800/50 transition-all text-left">
+                            <i data-feather="search" class="w-6 h-6 text-pink-400 mb-2"></i>
+                            <h4 class="font-medium mb-1">Summarize</h4>
+                            <p class="text-xs text-gray-400">Generate summaries</p>
+                        </button>
+                    </div>
+
+                    <!-- Processed Files -->
+                    <div>
+                        <h3 class="font-bold mb-3">Processed Files</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                                <div class="flex items-center">
+                                    <i data-feather="file" class="w-4 h-4 mr-3 text-gray-400"></i>
+                                    <div>
+                                        <p class="text-sm font-medium">quarterly-report.pdf</p>
+                                        <p class="text-xs text-gray-400">Organized to /Finance/Q1-2024</p>
+                                    </div>
+                                </div>
+                                <button class="text-purple-400 hover:text-purple-300">
+                                    <i data-feather="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize feather icons
+        feather.replace();
+
+        // Get agent info from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const agentId = urlParams.get('id');
+        const agentType = urlParams.get('type');
+
+        // Agent configuration
+        const agentConfigs = {
+            'code-reviewer': {
+                name: 'Code Reviewer',
+                type: 'Code Assistant',
+                purpose: 'Automatically reviews pull requests and suggests improvements',
+                capabilities: ['GitHub', 'OpenAI']
+            },
+            'doc-organizer': {
+                name: 'Doc Organizer',
+                type: 'Document Manager',
+                purpose: 'Organizes documents based on content and metadata',
+                capabilities: ['Dropbox', 'OpenAI']
+            },
+            'qa-bot': {
+                name: 'Q&A Bot',
+                type: 'Q&A Bot',
+                purpose: 'Answers technical questions from documentation',
+                capabilities: ['OpenAI', 'Vector DB']
+            },
+            'slack-moderator': {
+                name: 'Slack Moderator',
+                type: 'Q&A Bot',
+                purpose: 'Monitors Slack channels for policy violations',
+                capabilities: ['Slack', 'OpenAI']
+            }
+        };
+
+        // Load agent info
+        const config = agentConfigs[agentId] || agentConfigs['qa-bot'];
+        document.getElementById('agent-name').textContent = config.name;
+        document.getElementById('agent-type').textContent = config.type;
+        document.getElementById('agent-purpose').textContent = config.purpose;
+
+        const capabilitiesContainer = document.getElementById('agent-capabilities');
+        config.capabilities.forEach(cap => {
+            const badge = document.createElement('span');
+            badge.className = 'text-xs px-2 py-1 bg-gray-800 rounded-full';
+            badge.textContent = cap;
+            capabilitiesContainer.appendChild(badge);
+        });
+
+        // Show appropriate interface based on agent type
+        const chatInterface = document.getElementById('chat-interface');
+        const codeInterface = document.getElementById('code-interface');
+        const documentInterface = document.getElementById('document-interface');
+
+        if (agentType === 'code-assistant') {
+            chatInterface.classList.add('hidden');
+            codeInterface.classList.remove('hidden');
+        } else if (agentType === 'document-manager') {
+            chatInterface.classList.add('hidden');
+            documentInterface.classList.remove('hidden');
+        }
+
+        // Chat functionality
+        const messagesContainer = document.getElementById('messages-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start';
+            if (isUser) messageDiv.classList.add('justify-end');
+
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            messageDiv.innerHTML = `
+                ${!isUser ? `
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center flex-shrink-0">
+                        <i data-feather="cpu" class="w-4 h-4 text-white"></i>
+                    </div>
+                ` : ''}
+                <div class="ml-3 ${isUser ? 'message-user' : 'message-agent'} p-4 rounded-lg max-w-2xl">
+                    <p class="text-sm">${text}</p>
+                    <span class="text-xs ${isUser ? 'text-purple-100' : 'text-gray-400'} mt-2 block">${time}</span>
+                </div>
+            `;
+
+            messagesContainer.appendChild(messageDiv);
+            feather.replace();
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'flex items-start typing-message';
+            typingDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center flex-shrink-0">
+                    <i data-feather="cpu" class="w-4 h-4 text-white"></i>
+                </div>
+                <div class="ml-3 message-agent p-4 rounded-lg">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            feather.replace();
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            return typingDiv;
+        }
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, true);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+
+            // Show typing indicator
+            const typingIndicator = showTypingIndicator();
+
+            // Simulate agent response
+            setTimeout(() => {
+                typingIndicator.remove();
+                const responses = [
+                    "I understand. Let me help you with that. Based on my analysis, here's what I found...",
+                    "Great question! Here's a detailed explanation...",
+                    "I've processed your request. Here are the results...",
+                    "Let me break this down for you step by step..."
+                ];
+                addMessage(responses[Math.floor(Math.random() * responses.length)]);
+            }, 1500);
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // File upload drag and drop
+        const fileUploadZone = document.querySelector('.file-upload-zone');
+        if (fileUploadZone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileUploadZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileUploadZone.addEventListener(eventName, () => {
+                    fileUploadZone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileUploadZone.addEventListener(eventName, () => {
+                    fileUploadZone.classList.remove('dragover');
+                });
+            });
+
+            fileUploadZone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                console.log('Files dropped:', files);
+                // Handle file upload
+            });
+        }
+    </script>
+</body>
+</html>

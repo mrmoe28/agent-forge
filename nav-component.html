@@ -1,0 +1,68 @@
+<!-- Profile Dropdown Component - Include in all navigation bars -->
+<style>
+.profile-dropdown {
+    display: none;
+}
+.profile-dropdown.active {
+    display: block;
+}
+</style>
+
+<!-- Add this to the right side of your navigation -->
+<div class="ml-4 flex items-center md:ml-6 relative">
+    <button class="p-1 rounded-full text-gray-400 hover:text-white focus:outline-none mr-3">
+        <i data-feather="bell"></i>
+    </button>
+    <div class="relative">
+        <button id="profile-button" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none ring-2 ring-purple-600 ring-offset-2 ring-offset-gray-900">
+            <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=9333ea&color=fff" alt="Profile">
+        </button>
+        <!-- Profile Dropdown -->
+        <div id="profile-dropdown" class="profile-dropdown absolute right-0 mt-2 w-56 rounded-lg glass-card shadow-xl py-1">
+            <div class="px-4 py-3 border-b border-gray-700">
+                <p class="text-sm font-medium">John Doe</p>
+                <p class="text-xs text-gray-400">john@example.com</p>
+            </div>
+            <a href="settings.html" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">
+                <i data-feather="settings" class="w-4 h-4 mr-3"></i> Settings
+            </a>
+            <a href="settings.html?tab=billing" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">
+                <i data-feather="credit-card" class="w-4 h-4 mr-3"></i> Billing
+            </a>
+            <a href="settings.html?tab=api-keys" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">
+                <i data-feather="key" class="w-4 h-4 mr-3"></i> API Keys
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-800">
+                <i data-feather="help-circle" class="w-4 h-4 mr-3"></i> Help & Support
+            </a>
+            <div class="border-t border-gray-700 mt-1 pt-1">
+                <a href="#" class="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-800">
+                    <i data-feather="log-out" class="w-4 h-4 mr-3"></i> Sign Out
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for dropdown functionality -->
+<script>
+(function() {
+    const profileButton = document.getElementById('profile-button');
+    const profileDropdown = document.getElementById('profile-dropdown');
+
+    if (profileButton && profileDropdown) {
+        profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            profileDropdown.classList.remove('active');
+        });
+
+        profileDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+})();
+</script>
